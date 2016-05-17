@@ -1,0 +1,16 @@
+
+
+#above{
+	text-align: center;
+	margin: 20px;
+}
+body{
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.txt{
+	width:100%;
+}
+#editor{
+	padding:0px;
+}
