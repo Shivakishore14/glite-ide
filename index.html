@@ -7,8 +7,12 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet" />
 		<link href="css/bootstrap-theme.css" rel="stylesheet" />
 		<link href="css/style.css" rel="stylesheet"/>
+		<script src="codemirror/lib/codemirror.js"></script>
+		<link rel="stylesheet" href="codemirror/lib/codemirror.css">
+		<script data-main="js/script" src="js/require.js"></script>
 	</head>
 	<body>
+		<div id="test"></div>
 		<div id="overlay"></div>
 		<div id="above">
 			<div id="btngrp" class="btn-group" role="group" data-toggle="buttons-radio">
@@ -19,20 +23,27 @@
 			</div>
 			<button id="result" class="btn">result</button>
 		</div>
+		<div class="container-fluid">
 		<div class="row" id="outer">
 			<div id="htmleditor" class="editor col-md-3 col-lg-3 col-sm-3">
+				<div id="htmltitle">Html</div>				
 				<textarea class="txt" id="htmlcode" placeholder="HTML here"></textarea>
 			</div>
 			<div id="csseditor" class="editor col-md-3 col-lg-3 col-sm-3">
+				<div id="csstitle">css</div>
 				<textarea class="txt" id="csscode" placeholder="CSS here"></textarea>
 			</div>
 			<div id="jseditor" class="editor col-md-3 col-lg-3 col-sm-3">
+				<div id="jstitle">js</div>
 				<textarea class="txt" id="jscode" placeholder="Java Script here"></textarea>
 			</div>
 			<div id="resouter" class="col-md-3 col-lg-3 col-sm-3">
-				<div id="result1" >type code</div>
+				<iframe id="result1"></iframe>
 			</div>
 		</div>
+		</div>
+		<div>
+			<iframe id="result2"></iframe>		
+		</div>
 	</body>
-	<script src="js/script.js"></script>
 </html>

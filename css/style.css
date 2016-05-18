@@ -1,16 +1,32 @@
-
-
 #above{
 	text-align: center;
-	margin: 20px;
-}
-body{
-	padding-left: 15px;
-	padding-right: 15px;
+	padding:20px;
 }
 .txt{
 	width:100%;
 }
 .editor{
 	padding:0px;
+}
+#htmltitle, #csstitle, #jstitle{
+	border-radius: 7px 20px 0px 0px;
+	background-color:cadetblue;
+	width:50%;
+	text-align: center;
+	color: #FFFFFF;
+}
+#result1{
+	height:400px;
+	width:100%;
+	border:none;
+}
+#result2{
+	width:100%;
+	display:none;
+}
+#test{ 
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color:cadetblue;
 }
