@@ -15,6 +15,7 @@ window.onload = function(){
 	var arr = [true,true,true,true];
 	var editorarr = ["htmleditor","csseditor","jseditor","resouter"];
 	var currentold = [3,0];
+	var theme=["default","ambiance","the-matrix","neat"];
 	var sizeclass = ["col-sm-","col-md-","col-lg-"];
 	function resize(){
 		var i,j;
@@ -79,16 +80,19 @@ window.onload = function(){
 	var htmleditor = CodeMirror.fromTextArea(document.getElementById("htmlcode"), {
 		lineNumbers: true,
 		extraKeys: {"Ctrl-Space": "autocomplete"},
+		matchBrackets: true,
 		mode: "htmlmixed"
   	});
 	var csseditor = CodeMirror.fromTextArea(document.getElementById("csscode"), {
     		lineNumbers: true,
 		extraKeys: {"Ctrl-Space": "autocomplete"},
+		matchBrackets: true,		
 		mode: "css"
 		});
 	var jseditor = CodeMirror.fromTextArea(document.getElementById("jscode"), {
 		lineNumbers: true,
 		extraKeys: {"Ctrl-Space": "autocomplete"},
+		matchBrackets: true,
 		mode: {name: "javascript", globalVars: true}
 	});
 	$("#result").on('click',function(event){
@@ -111,8 +115,12 @@ window.onload = function(){
 			window.location.hash = hash;
  		});
 	});
-  
-		
+  	function setTheme(a){
+		htmleditor.setOption("theme", a);
+		csseditor.setOption("theme", a);
+		jseditor.setOption("theme", a);	
+	}	
+	setTheme("default");
 	init();	
 }
 
