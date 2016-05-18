@@ -14,19 +14,29 @@
 	width:50%;
 	text-align: center;
 	color: #FFFFFF;
+	height:100%;
 }
 #result1{
-	height:400px;
 	width:100%;
-	border:none;
 }
 #result2{
 	width:100%;
-	display:none;
 }
 #test{ 
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background-color:cadetblue;
+	background-color:aqua;
+}
+#changeres1, #changeres2{
+	width:20px;
+	height:20px;
+	background-color:green;
+	position:absolute;
+	margin:20px;
+	opacity: 0.5;
+	right : 0;
+}
+#changeres2{
+	display:none;
 }
