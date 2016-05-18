@@ -9,10 +9,15 @@
 		<link href="css/style.css" rel="stylesheet"/>
 		<script src="codemirror/lib/codemirror.js"></script>
 		<link rel="stylesheet" href="codemirror/lib/codemirror.css">
+		<link rel="stylesheet" href="codemirror/addon/hint/show-hint.css">
 		<script src="codemirror/mode/javascript/javascript.js"></script>
 		<script src="codemirror/mode/css/css.js"></script>
 		<script src="codemirror/mode/xml/xml.js"></script>
 		<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="codemirror/addon/hint/show-hint.js"></script>
+		<script src="codemirror/addon/hint/javascript-hint.js"></script>
+		<script src="codemirror/addon/hint/css-hint.js"></script>
+		<script src="codemirror/addon/hint/html-hint.js"></script>
 		<script src="js/script.js"></script>
 	</head>
 	<body>
@@ -29,27 +34,27 @@
 			</div>
 			<div id="couter" class="container-fluid">
 				<div class="row" id="outer">
-					<div id="htmleditor" class="editor col-md-3 col-lg-3 col-sm-3">
+					<div id="htmleditor" class="editor col-md-4 col-lg-4 col-sm-4">
 						<div id="htmltitle">Html</div>				
 						<textarea class="txt" id="htmlcode" placeholder="HTML here"></textarea>
 					</div>
-					<div id="csseditor" class="editor col-md-3 col-lg-3 col-sm-3">
+					<div id="csseditor" class="editor col-md-4 col-lg-4 col-sm-4">
 						<div id="csstitle">css</div>
 						<textarea class="txt" id="csscode" placeholder="CSS here"></textarea>
 					</div>
-					<div id="jseditor" class="editor col-md-3 col-lg-3 col-sm-3">
+					<div id="jseditor" class="editor col-md-4 col-lg-4 col-sm-4">
 						<div id="jstitle">js</div>
 						<textarea class="txt" id="jscode" placeholder="Java Script here"></textarea>
 					</div>
 					<div id="resouter" class="col-md-3 col-lg-3 col-sm-3">
-						<div id="changeres1"></div>
+						<btn id="changeres1"></btn>
 						<iframe id="result1"></iframe>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div id="res2outer">	
-			<div id="changeres2"></div>
+		<div id="res2outer">
+			<btn id="changeres2"></btn>
 			<iframe id="result2"></iframe>		
 		</div>
 	</body>
