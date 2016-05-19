@@ -79,19 +79,31 @@ window.onload = function(){
 	});
 	var htmleditor = CodeMirror.fromTextArea(document.getElementById("htmlcode"), {
 		lineNumbers: true,
-		extraKeys: {"Ctrl-Space": "autocomplete"},
+		extraKeys: {"Ctrl-Space": "autocomplete","Alt-F": "findPersistent","F11": function(cm) {
+			cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+		},"Esc": function(cm) {
+			if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+		}},
 		matchBrackets: true,
 		mode: "htmlmixed"
   	});
 	var csseditor = CodeMirror.fromTextArea(document.getElementById("csscode"), {
     		lineNumbers: true,
-		extraKeys: {"Ctrl-Space": "autocomplete"},
+		extraKeys: {"Ctrl-Space": "autocomplete","Alt-F": "findPersistent","F11": function(cm) {
+			cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+		},"Esc": function(cm) {
+			if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+		}},
 		matchBrackets: true,		
 		mode: "css"
 		});
 	var jseditor = CodeMirror.fromTextArea(document.getElementById("jscode"), {
 		lineNumbers: true,
-		extraKeys: {"Ctrl-Space": "autocomplete"},
+		extraKeys: {"Ctrl-Space": "autocomplete","Alt-F": "findPersistent","F11": function(cm) {
+			cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+		},"Esc": function(cm) {
+			if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+		}},
 		matchBrackets: true,
 		mode: {name: "javascript", globalVars: true}
 	});
