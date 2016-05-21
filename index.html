@@ -4,6 +4,7 @@
 		<title>Glite</title>
 		<script src="js/jquery.js"></script>
 		<script src="js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="js/bootstraptoggle.js" type="text/javascript"></script>
 		<link href="css/bootstrap.min.css" rel="stylesheet" />
 		<link href="css/bootstrap-theme.css" rel="stylesheet" />
 		<link href="css/style.css" rel="stylesheet"/>
@@ -38,6 +39,62 @@
 	</head>
 	<body>
 		<div id="test"></div>
+		<div id="popupbg" class="container">
+			<div class="row">
+				<div class="col-lg-3"></div>
+				<div id="popup" class="col-lg-6">
+					<div>	
+						<h1 align="center">Settings</h1><br><br>
+						<div class="container-fluid settings-elt">
+							<div class="row">
+								<div class="col-lg-6">
+									<span>Theme </span>
+								</div>
+								<div class="col-lg-6">
+									<select id="select" class="form-control">
+										<option selected>default</option>
+    										<option>ambiance</option>
+										<option>the-matrix</option>
+										<option>neat</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="container-fluid settings-elt">
+							<div class="row">
+								<div class="col-lg-6">
+									<span>Match Brackets </span>
+								</div>	
+								<div class="col-lg-6" align="center">
+									<input checked id="cbMatchBrackets" data-toggle="toggle" type="checkbox">
+								</div>
+							</div>
+						</div>
+						<div class="container-fluid settings-elt">
+							<div class="row">
+								<div class="col-lg-6">
+									<span>Line numbers </span>
+								</div>	
+								<div class="col-lg-6" align="center">
+									<input checked id="cbLineNum" data-toggle="toggle" type="checkbox">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4"></div>
+							<button id="setbtndone" class="btn btn-warning col-lg-4">done</button>
+						</div>
+					</div>
+				</div>		
+			</div>
+		</div>
+		<div id="top">
+			<span id="icongrp">
+			<span class="glyphicon glyphicon-import icons" data-toggle="tooltip" data-placement="bottom" title="import project"></span>
+			<span class="glyphicon glyphicon-floppy-disk icons" data-toggle="tooltip" data-placement="bottom" title="save project"></span>
+			<span id="settingsicon" class="glyphicon glyphicon-wrench icons" animation="true" data-toggle="tooltip" data-placement="bottom" title="settings"></span>	
+			</span>
+		</div>
 		<div id="overlay">
 			<div id="above">
 				<div id="btngrp" class="btn-group" role="group" data-toggle="buttons-radio">
