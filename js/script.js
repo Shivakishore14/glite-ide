@@ -210,7 +210,14 @@ function completeAfter(cm, pred) {
 		$("#popup").css('left',tw/2-w/2-20);
 	}	
 	setTheme("default");
-	
+	$("#saveicon").on("click", function(){
+		send(htmleditor.getValue("\n"), csseditor.getValue("\n"), jseditor.getValue("\n"));
+	});
+	function send(a,b,c){
+			$.post('/save/', { html:a, css:b, js:c }, function(result) {
+    				alert("done");
+			});
+	}
 	init();	
 }
 
