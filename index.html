@@ -40,7 +40,7 @@
 	<body>
 		<div id="test"></div>
 		<div id="popupbg" class="container">
-			<div class="row">
+			<div class="row" id="settings">
 				<div class="col-lg-3"></div>
 				<div id="popup" class="col-lg-6">
 					<div>	
@@ -52,7 +52,7 @@
 								</div>
 								<div class="col-lg-6">
 									<select id="select" class="form-control">
-										<option selected>default</option>
+										<option selected="selected">default</option>
     										<option>ambiance</option>
 										<option>the-matrix</option>
 										<option>neat</option>
@@ -87,8 +87,25 @@
 					</div>
 				</div>		
 			</div>
+			<div class="row" id="save">
+				<div class="col-lg-3"></div>
+				<div class="col-lg-6 container-fluid" id="savepopup">
+					<h1 align="center">Save</h1><br>
+					<div class="row save-elt">
+						<span class="col-lg-6">Project name</span><input class="col-lg-6" type="text" name="path"></input>
+					</div>
+					<div class="row save-elt">
+						<span class="col-lg-6">Path </span><input class="col-lg-6" type="text" name="path"></input>
+					</div>
+					<div class="row save-elt">
+						<div class="col-lg-4"></div>
+						<button class="btn btn-warning col-lg-4" id="btnsave">Save</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div id="top">
+			<span id="logo"><span class="b">{</span> G.lite <span class="b">}</span></span>
 			<span id="icongrp">
 			<span class="glyphicon glyphicon-import icons" data-toggle="tooltip" data-placement="bottom" title="import project"></span>
 			<span id="saveicon" class="glyphicon glyphicon-floppy-disk icons" data-toggle="tooltip" data-placement="bottom" title="save project"></span>

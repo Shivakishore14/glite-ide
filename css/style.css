@@ -2,7 +2,8 @@
 	margin-left:-20px;margin-right:5px
 }
 .toggle{
-	position:relative;overflow:hidden
+	position:relative;
+	overflow:hidden
 }
 .toggle input[type=checkbox]{
 	display:none
@@ -110,7 +111,8 @@
 .icons{
 	margin:10px;
 	font-size: 30px;
-	color:#FFFFFF;
+	color:#FFF;
+	opacity: 2;
 	cursor: default;
 }
 .icons:active{
@@ -127,13 +129,25 @@
 	height:100%;
 	display:none;
 }
-#popup{
+#popup , #savepopup{
 	background:white; 
 	position: fixed;
 	padding: 20px;
 	border: solid #00BE6D 5px;
 	border-radius: 30px;
+	display:none;
 }
-.settings-elt{
+.settings-elt , .save-elt{
 	margin:6px;
 }
+#logo{
+	color:#FFF;
+	font-size:30px;
+	margin-left:30px;
+	font-weight: 600;
+}
+.b{
+	color: yellow;
+	font-weight: 900;
+}
+

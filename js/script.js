@@ -146,10 +146,12 @@ function completeAfter(cm, pred) {
  		});
 	});
 	$("#settingsicon").on("click",function(){
-		$("#popupbg").show();	
+		$("#popupbg").show();
+		$("#popup").show();	
 		setpopelt();
 	});
 	$("#setbtndone").on("click",function(){
+		$("#popup").hide();
 		$("#popupbg").hide();	
 	});
 	$("#select").change(function () {
@@ -208,16 +210,36 @@ function completeAfter(cm, pred) {
 		var w = $("#popup").width();
 		$("#popup").css('top',th/2-h/2-20);
 		$("#popup").css('left',tw/2-w/2-20);
+	}
+	function savepopelt(){
+		var h = $("#savepopup").height();
+		var w = $("#savepopup").width();
+		$("#savepopup").css('top',th/2-h/2-20);
+		$("#savepopup").css('left',tw/2-w/2-20);
 	}	
 	setTheme("default");
 	$("#saveicon").on("click", function(){
-		send(htmleditor.getValue("\n"), csseditor.getValue("\n"), jseditor.getValue("\n"));
+		$("#savepopup").show();
+		$("#popupbg").show();	
+		savepopelt();
+		
 	});
-	function send(a,b,c){
-			$.post('/save/', { html:a, css:b, js:c }, function(result) {
+	$("#btnsave").on("click",function(){
+		var path= '';		
+		send(htmleditor.getValue("\n"), csseditor.getValue("\n"), jseditor.getValue("\n"),path);
+		$("#savepopup").hide();
+		$("#popupbg").hide();
+	});
+	function send(a,b,c,d){
+			$.post('/save/', { html:a, css:b, js:c, path:d }, function(result) {
     				alert("done");
 			});
 	}
+	var str = "";
+	$( "select option:selected" ).each(function() {
+		str += $( this ).text() + " ";
+	});
+	setTheme(str);
 	init();	
 }
 
