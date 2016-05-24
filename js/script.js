@@ -224,15 +224,28 @@ function completeAfter(cm, pred) {
 		savepopelt();
 		
 	});
+	$("#importicon").on("click",function(){
+		pathval="/root/Documents/ls/test/"
+		$.post("/import/",{path:pathval}, function(result){
+			var obj = jQuery.parseJSON( result );
+			htmleditor.setValue(Base64.decode(obj.Html));
+			csseditor.setValue(Base64.decode(obj.Css));
+			jseditor.setValue(Base64.decode(obj.Js));
+		});	
+	});
 	$("#btnsave").on("click",function(){
-		var path= '';		
+		var path= $("#path").val();		
 		send(htmleditor.getValue("\n"), csseditor.getValue("\n"), jseditor.getValue("\n"),path);
 		$("#savepopup").hide();
 		$("#popupbg").hide();
 	});
 	function send(a,b,c,d){
 			$.post('/save/', { html:a, css:b, js:c, path:d }, function(result) {
-    				alert("done");
+    				if (result == "saved"){
+					alert("saved");				
+				} else {
+					alert(result);				
+				}
 			});
 	}
 	var str = "";
