@@ -27,6 +27,15 @@ func pathExists(path string) (bool, error) {
 	if os.IsNotExist(err) { return false, nil }
 	return true, err
 }
+func isDir(path string) (bool, error) {
+	fileInfo, err := os.Stat(path)
+	fmt.Println(path)
+	if err != nil{
+		return false,err	
+	}
+	return fileInfo.IsDir(), err
+}
+
 func (g *Glite)saveProject() error{
 	path := string(g.Path)
 	pe, _ := pathExists(path)
@@ -79,11 +88,33 @@ func importHandler(w http.ResponseWriter, r *http.Request){
 	}
 	fmt.Fprintf(w, s)
 }
+func ftHandler(w http.ResponseWriter, r *http.Request){
+	path := r.FormValue("dir")
+	head := "<ul class=\"jqueryFileTree\" style=\"display: none;\"> \n"
+	files, _ := ioutil.ReadDir(path)
+	for _, f := range files {
+		if b,_ := pathExists(path+f.Name()); b{
+			//fmt.Println(path)
+			a,_ := isDir(path+f.Name())
+			if a {
+				s := fmt.Sprintf("<li class=\"directory collapsed\"><a href=\"#\" rel=\" %s/ \"> %s </a></li> \n" ,path, f.Name() )
+				head = head + s
+			} else {
+				s := fmt.Sprintf("<li class=\"file ext_%s\"><a href=\"#\" rel=\" %s \"> %s </a></li> \n" ,"txt", path, f.Name() )
+				head = head + s
+			}
+		}
+	}
+	head = head + "</ul>"
+	fmt.Println(head)
+	fmt.Fprintf(w, head)
+}
 func main(){
 	fs := http.FileServer(http.Dir("."))
 	http.Handle("/",fs)
 	http.HandleFunc("/save/",saveHandler)
 	http.HandleFunc("/import/",importHandler)
+	http.HandleFunc("/filetree/",ftHandler)
 	http.ListenAndServe(":80",nil)
 	
 }

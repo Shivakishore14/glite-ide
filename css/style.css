@@ -129,7 +129,7 @@
 	height:100%;
 	display:none;
 }
-#popup , #savepopup{
+#popup , #savepopup, #ftdiv{
 	background:white; 
 	position: fixed;
 	padding: 20px;
