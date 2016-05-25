@@ -90,6 +90,7 @@ func importHandler(w http.ResponseWriter, r *http.Request){
 }
 func ftHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("dir")
+	fmt.Println("path = 	"+path)
 	head := "<ul class=\"jqueryFileTree\" style=\"display: none;\"> \n"
 	files, _ := ioutil.ReadDir(path)
 	for _, f := range files {
@@ -97,10 +98,10 @@ func ftHandler(w http.ResponseWriter, r *http.Request){
 			//fmt.Println(path)
 			a,_ := isDir(path+f.Name())
 			if a {
-				s := fmt.Sprintf("<li class=\"directory collapsed\"><a href=\"#\" rel=\" %s/ \"> %s </a></li> \n" ,path, f.Name() )
+				s := fmt.Sprintf("<li class=\"directory collapsed\"><a href=\"#\" rel=\"%s/\"> %s </a></li> \n" ,path+f.Name(), f.Name() )
 				head = head + s
 			} else {
-				s := fmt.Sprintf("<li class=\"file ext_%s\"><a href=\"#\" rel=\" %s \"> %s </a></li> \n" ,"txt", path, f.Name() )
+				s := fmt.Sprintf("<li class=\"file ext_%s\"><a href=\"#\" rel=\"%s\"> %s </a></li> \n" ,"txt", path+f.Name(), f.Name() )
 				head = head + s
 			}
 		}

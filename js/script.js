@@ -254,9 +254,7 @@ function completeAfter(cm, pred) {
 	});
 	setTheme(str);
 	init();	
-	$("#popupbg").show();
-	$("#ftdiv").show();
-	$('#ftdiv').fileTree({ root: '/', script: 'connectors/jqueryFileTree.php' }, function(file) { 
+	$('#ftdiv').fileTree({ root: '/', script: 'filetree/' }, function(file) { 
 					alert(file);
 				});
 }
