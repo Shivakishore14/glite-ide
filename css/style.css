@@ -129,7 +129,7 @@
 	height:100%;
 	display:none;
 }
-#popup , #savepopup, #ftdiv{
+#popup , #savepopup,#ftdiv{
 	background:white; 
 	position: fixed;
 	padding: 20px;
@@ -137,7 +137,12 @@
 	border-radius: 30px;
 	display:none;
 }
-.settings-elt , .save-elt{
+
+#ftdiv1{
+	overflow-x: hidden;
+    	overflow-y: scroll;
+}
+.settings-elt , .save-elt, .open-elt{
 	margin:6px;
 }
 #logo{

@@ -2,13 +2,9 @@
 <html>
 	<head>
 		<title>Glite</title>
-		<script src="js/jquery.js"></script>
-		<script src="js/bootstrap.min.js" type="text/javascript"></script>
-		<script src="js/bootstraptoggle.js" type="text/javascript"></script>
 		<link  rel="stylesheet" href="css/bootstrap.min.css"/>
 		<link  rel="stylesheet" href="css/bootstrap-theme.css"/>
 		<link  rel="stylesheet" href="css/style.css"/>
-		<script src="codemirror/lib/codemirror.js"></script>
 		<link rel="stylesheet" href="codemirror/lib/codemirror.css">
 		<link rel="stylesheet" href="codemirror/addon/hint/show-hint.css">
 		<link rel="stylesheet" href="codemirror/theme/ambiance.css">
@@ -17,6 +13,11 @@
 		<link rel="stylesheet" href="codemirror/addon/dialog/dialog.css">
 		<link rel="stylesheet" href="codemirror/addon/search/matchesonscrollbar.css">
 		<link rel="stylesheet" href="codemirror/addon/display/fullscreen.css">
+		<link href="css/jqueryFileTree.css" rel="stylesheet" type="text/css" media="screen"/>
+		<script src="js/jquery.js"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="js/bootstraptoggle.js" type="text/javascript"></script>		
+		<script src="codemirror/lib/codemirror.js"></script>
 		<script src="codemirror/mode/javascript/javascript.js"></script>
 		<script src="codemirror/mode/css/css.js"></script>
 		<script src="codemirror/mode/xml/xml.js"></script>
@@ -36,10 +37,8 @@
 		<script src="codemirror/addon/search/jump-to-line.js"></script>
 		<script src="codemirror/addon/display/fullscreen.js"></script>
 		<script src="js/script.js"></script>
-		
 		<script src="js/jquery.easing.js" type="text/javascript"></script>
 		<script src="js/jqueryFileTree.js" type="text/javascript"></script>
-		<link href="css/jqueryFileTree.css" rel="stylesheet" type="text/css" media="screen" />
 	</head>
 	<body>
 		<div id="test"></div>
@@ -110,7 +109,12 @@
 			<div class="row" id="testdiv">
 				<div class="col-lg-3"></div>
 				<div class="col-lg-6 container-fluid" id="ftdiv">
-					
+					<h1 align="center">Open</h1><br>
+					<div id="ftdiv1"></div>
+					<div class="row open-elt">
+						<div class="col-lg-4"></div>
+						<button class="btn btn-warning col-lg-4" id="btnopen">open</button>
+					</div>
 				</div>
 			</div>
 		</div>

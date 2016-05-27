@@ -7,8 +7,9 @@ import (
 	"path/filepath"
 	"os"
 	"encoding/json"
-//	"html/template"
+	"runtime"
 )
+var home string
 type Glite struct{
 	Html []byte
 	Css []byte
@@ -23,9 +24,13 @@ func (e CError) Error() string {
 }
 func pathExists(path string) (bool, error) {
 	_, err := os.Stat(path)
-	if err == nil { return true, nil }
-	if os.IsNotExist(err) { return false, nil }
-	return true, err
+	if err == nil { 
+		return true, nil 
+	}
+	if os.IsNotExist(err) { 
+		return false, nil 
+	}
+	return false, err
 }
 func isDir(path string) (bool, error) {
 	fileInfo, err := os.Stat(path)
@@ -111,6 +116,22 @@ func ftHandler(w http.ResponseWriter, r *http.Request){
 	fmt.Fprintf(w, head)
 }
 func main(){
+	if runtime.GOOS == "windows" {
+		home = "C:\\glite"
+		fmt.Println("Hello from Windows")
+	}
+	if runtime.GOOS == "linux" {
+		home = "/glite"
+		fmt.Println("Hello from linux")
+	}
+	pe, _ := pathExists(home)
+	if pe != true {
+		e := os.Mkdir(string(filepath.Separator) + home, 0777)
+		if e != nil {
+			fmt.Println("error")			
+		}	
+		fmt.Println("created")
+	}
 	fs := http.FileServer(http.Dir("."))
 	http.Handle("/",fs)
 	http.HandleFunc("/save/",saveHandler)

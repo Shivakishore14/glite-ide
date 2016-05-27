@@ -216,6 +216,14 @@ function completeAfter(cm, pred) {
 		var w = $("#savepopup").width();
 		$("#savepopup").css('top',th/2-h/2-20);
 		$("#savepopup").css('left',tw/2-w/2-20);
+	}
+	function ftpopelt(){
+		$("#ftdiv").css('height',th/2+10);
+		$("#ftdiv1").css('height',th/4-10);
+		var h = $("#ftdiv").height();
+		var w = $("#ftdiv").width();
+		$("#ftdiv").css('top',th/2-h/2-20);
+		$("#ftdiv").css('left',tw/2);	
 	}	
 	setTheme("default");
 	$("#saveicon").on("click", function(){
@@ -224,7 +232,16 @@ function completeAfter(cm, pred) {
 		savepopelt();
 		
 	});
-	$("#importicon").on("click",function(){
+	$("#importicon").on("click", function(){
+		$("#popupbg").show();
+		$("#ftdiv").show();
+		savepopelt();
+		$('#ftdiv1').fileTree({ root: '/', script: 'filetree/' }, function(file) { 
+					alert(file);
+		});
+		ftpopelt();
+	});
+	$("#btnopen").on("click",function(){
 		pathval="/root/Documents/ls/test/"
 		$.post("/import/",{path:pathval}, function(result){
 			var obj = jQuery.parseJSON( result );
@@ -232,6 +249,8 @@ function completeAfter(cm, pred) {
 			csseditor.setValue(Base64.decode(obj.Css));
 			jseditor.setValue(Base64.decode(obj.Js));
 		});	
+		$("#ftdiv").hide();
+		$("#popupbg").hide();
 	});
 	$("#btnsave").on("click",function(){
 		var path= $("#path").val();		
@@ -254,8 +273,5 @@ function completeAfter(cm, pred) {
 	});
 	setTheme(str);
 	init();	
-	$('#ftdiv').fileTree({ root: '/', script: 'filetree/' }, function(file) { 
-					alert(file);
-				});
+	
 }
-
