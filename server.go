@@ -140,7 +140,6 @@ func ftHandler(w http.ResponseWriter, r *http.Request){
 		}
 	}
 	head = head + "</ul>"
-	fmt.Println(head)
 	fmt.Fprintf(w, head)
 }
 func main(){

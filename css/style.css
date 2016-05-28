@@ -72,6 +72,9 @@
 .editor{
 	padding:0px;
 }
+h1{
+	text-align:center;
+}
 #htmltitle, #csstitle, #jstitle{
 	border-radius: 7px 20px 0px 0px;
 	background-color:cadetblue;
@@ -142,7 +145,7 @@
 	overflow-x: hidden;
     	overflow-y: scroll;
 }
-.settings-elt , .save-elt, .open-elt{
+.settings-elt , .save-elt, .open-elt, .cpdiv{
 	margin:6px;
 }
 #logo{

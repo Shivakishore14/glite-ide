@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Glite</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="css/bootstrap-theme.css"/>
+		<link rel="stylesheet" href="css/style.css"/>
+		<script src="js/jquery.js"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="js/bootstraptoggle.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="css/jqueryFileTree.css" type="text/css" media="screen"/>
+		<script src="js/jquery.easing.js" type="text/javascript"></script>
+		<script src="js/jqueryFileTree.js" type="text/javascript"></script>
+		
+	</head>
+	<body>
+		<div id="top">
+			<span id="logo"><span class="b">{</span> G.lite <span class="b">}</span></span>
+		</div>
+		<div class = "container-fluid">
+			<div class = "row">
+				<div class="col-lg-6">
+					<h1>Open project</h1>
+					<div id="op"></div><br><br>
+					<div class="row"><span class="col-lg-4"></span>
+							<button class="btn btn-warning col-lg-4">Open</button>
+					</div>					
+				</div>	
+				<div class="col-lg-6">
+					<h1>Create project</h1><br><br>
+					<div id="projectdetails">					
+						<div class="row">
+							<span class="col-lg-1"></span><div class="col-lg-2">Name </div><input class="col-lg-7" type="text" id="path"></input>
+						</div><br>
+						<h3>Initialize with</h3>
+						<div class="row cpdiv">
+							<span class="col-lg-1"></span>
+							<div class="col-lg-2">
+								<span>Html</span>
+							</div>	
+							<div class="col-lg-7" align="center">
+								<input checked id="cbHtml" data-toggle="toggle" type="checkbox">
+							</div>
+						</div>
+						<div class="row cpdiv">
+							<span class="col-lg-1"></span>
+							<div class="col-lg-2">
+								<span>Css</span>
+							</div>	
+							<div class="col-lg-7" align="center">
+								<input checked id="cbCss" data-toggle="toggle" type="checkbox">
+							</div>
+						</div>	
+						<div class="row cpdiv">
+							<span class="col-lg-1"></span>
+							<div class="col-lg-2">
+								<span>JavaScript</span>
+							</div>	
+							<div class="col-lg-7" align="center">
+								<input checked id="cbjs" data-toggle="toggle" type="checkbox">
+							</div>
+						</div>
+						<h3>Initialze Frameworks</h3>
+						<div class="row cpdiv">
+							<span class="col-lg-1"></span>
+							<div class="col-lg-2">
+								<span>Jquery</span>
+							</div>	
+							<div class="col-lg-7" align="center">
+								<input checked id="cbjquery" data-toggle="toggle" type="checkbox">
+							</div>
+						</div>
+						<div class="row cpdiv">
+							<span class="col-lg-1"></span>
+							<div class="col-lg-2">
+								<span>Bootstrap</span>
+							</div>	
+							<div class="col-lg-7" align="center">
+								<input checked id="cbbootstrap" data-toggle="toggle" type="checkbox">
+							</div>
+						</div><br>
+						<div class="row"><span class="col-lg-4"></span>
+							<button class="btn btn-warning col-lg-4">Create</button>
+						</div>				
+					</div>
+				</div>		
+			</div>
+		</div>
+	</body>
+	<script>
+		$('#op').fileTree({ root: '/glite/', script: 'filetree/' }, function(file) { 
+						openpath=file+"/";
+		});
+	</script>
+</html>
