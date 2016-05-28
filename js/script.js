@@ -232,23 +232,18 @@ function completeAfter(cm, pred) {
 		savepopelt();
 		
 	});
+	openpath=""
 	$("#importicon").on("click", function(){
 		$("#popupbg").show();
 		$("#ftdiv").show();
 		savepopelt();
 		$('#ftdiv1').fileTree({ root: '/', script: 'filetree/' }, function(file) { 
-					alert(file);
+					openpath=file+"/";
 		});
 		ftpopelt();
 	});
 	$("#btnopen").on("click",function(){
-		pathval="/root/Documents/ls/test/"
-		$.post("/import/",{path:pathval}, function(result){
-			var obj = jQuery.parseJSON( result );
-			htmleditor.setValue(Base64.decode(obj.Html));
-			csseditor.setValue(Base64.decode(obj.Css));
-			jseditor.setValue(Base64.decode(obj.Js));
-		});	
+		open(openpath);
 		$("#ftdiv").hide();
 		$("#popupbg").hide();
 	});
@@ -258,6 +253,17 @@ function completeAfter(cm, pred) {
 		$("#savepopup").hide();
 		$("#popupbg").hide();
 	});
+	function open(pathval) {
+		$.post("/import/",{path:pathval}, function(result){
+			if ( result === "not project" ){
+				alert("not imported")			
+			} 
+			var obj = jQuery.parseJSON( result );
+			htmleditor.setValue(Base64.decode(obj.Html));
+			csseditor.setValue(Base64.decode(obj.Css));
+			jseditor.setValue(Base64.decode(obj.Js));
+		});	
+	}
 	function send(a,b,c,d){
 			$.post('/save/', { html:a, css:b, js:c, path:d }, function(result) {
     				if (result == "saved"){

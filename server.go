@@ -8,6 +8,7 @@ import (
 	"os"
 	"encoding/json"
 	"runtime"
+	"strings"
 )
 var home string
 type Glite struct{
@@ -46,17 +47,22 @@ func (g *Glite)saveProject() error{
 	pe, _ := pathExists(path)
 	if pe != true {
 		os.MkdirAll(string(filepath.Separator) + path,0777)	
-		fmt.Println("created")
+		fmt.Println(path + " created")
 	}
 	herr := ioutil.WriteFile(path+"index1.html", g.Html, 0777)
 	cerr := ioutil.WriteFile(path+"style.css", g.Css, 0777)
 	jerr := ioutil.WriteFile(path+"script.js", g.Js, 0777)
-	if herr != nil || cerr != nil || jerr != nil{
+	cferr := ioutil.WriteFile(path+"proj.cnf", []byte("configuration"), 0777)
+	if herr != nil || cerr != nil || jerr != nil || cferr != nil{
 		return CError{Message:"Write error"}
 	}
 	return nil
 }
 func importProject(path string) (string, error){
+	a,_ := pathExists(path+"proj.cnf")
+	if a != true {
+		return "error", CError{Message: "not project"}	
+	}
 	html, herr := ioutil.ReadFile(path+"index1.html")
 	css, cerr := ioutil.ReadFile(path+"style.css")
 	js, jerr := ioutil.ReadFile(path+"script.js")
@@ -76,6 +82,11 @@ func saveHandler(w http.ResponseWriter, r *http.Request){
 	js := r.FormValue("js")
 	path := r.FormValue("path")
 	fmt.Println(html)
+	l := len(path)
+	if path[l-1] != '/' {  //linux
+		path = path + "/"
+		fmt.Println("added /")
+	}
 	g := &Glite{Html: []byte(html) , Css: []byte(css), Js: []byte(js), Path:[]byte(path)}
 	err := g.saveProject()
 	if err != nil {
@@ -90,8 +101,9 @@ func importHandler(w http.ResponseWriter, r *http.Request){
 	s,err := importProject(path)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())	
+	} else {
+		fmt.Fprintf(w, s)
 	}
-	fmt.Fprintf(w, s)
 }
 func ftHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("dir")
@@ -102,11 +114,27 @@ func ftHandler(w http.ResponseWriter, r *http.Request){
 		if b,_ := pathExists(path+f.Name()); b{
 			//fmt.Println(path)
 			a,_ := isDir(path+f.Name())
+			
 			if a {
-				s := fmt.Sprintf("<li class=\"directory collapsed\"><a href=\"#\" rel=\"%s/\"> %s </a></li> \n" ,path+f.Name(), f.Name() )
+				c,_ := pathExists(path+f.Name()+"/proj.cnf")
+				s := ""
+				if c != true {
+					s = fmt.Sprintf("<li class=\"directory collapsed\"><a href=\"#\" rel=\"%s/\"> %s </a></li> \n" ,path+f.Name(), f.Name() )
+				}else{
+					s = fmt.Sprintf("<li class=\"file ext_%s\"><a href=\"#\" rel=\"%s\"> %s </a></li> \n" ,"gproj", path+f.Name(), f.Name() )
+				}
 				head = head + s
-			} else {
-				s := fmt.Sprintf("<li class=\"file ext_%s\"><a href=\"#\" rel=\"%s\"> %s </a></li> \n" ,"txt", path+f.Name(), f.Name() )
+
+			} else  {
+				//gproj ext for the folder
+				ext := strings.Split(f.Name(), ".")
+				l := len(ext)
+				if l > 1 {
+					ext[0] = ext[l-1]				
+				} else {
+					ext[0] = "unknown"
+				}
+				s := fmt.Sprintf("<li class=\"file ext_%s\"><a href=\"#\" rel=\"%s\"> %s </a></li> \n" ,ext[0], path+f.Name(), f.Name() )
 				head = head + s
 			}
 		}
