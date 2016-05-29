@@ -158,4 +158,7 @@ h1{
 	color: yellow;
 	font-weight: 900;
 }
+#opOuter,#ofOuter{
+	height:50%;
+}
 

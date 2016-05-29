@@ -14,16 +14,26 @@
 		
 	</head>
 	<body>
+		<div id="test"></div>
 		<div id="top">
 			<span id="logo"><span class="b">{</span> G.lite <span class="b">}</span></span>
 		</div>
 		<div class = "container-fluid">
 			<div class = "row">
-				<div class="col-lg-6">
-					<h1>Open project</h1>
-					<div id="op"></div><br><br>
-					<div class="row"><span class="col-lg-4"></span>
-							<button class="btn btn-warning col-lg-4">Open</button>
+				<div class="col-lg-6" id="openOuter">
+					<div id="opOuter">
+						<h1>Open project</h1>
+						<div id="op"></div><br>
+						<div class="row"><span class="col-lg-4"></span>
+								<button class="btn btn-warning col-lg-4">Open</button>
+						</div>
+					</div>	
+					<div id="ofOuter">
+						<h1>Open Files</h1>
+						<div id="of"></div><br>
+						<div class="row"><span class="col-lg-4"></span>
+								<button class="btn btn-warning col-lg-4">Open</button>
+						</div>
 					</div>					
 				</div>	
 				<div class="col-lg-6">
@@ -87,8 +97,36 @@
 			</div>
 		</div>
 	</body>
+	<style>
+		h1{
+			margin : 0px;	
+			padding :10px;	
+		}
+		#op,#of {
+			padding: 10px;
+			background-color:#FFF;
+			border:solid #00BE6D 1px;
+			border-radius: 10px;	
+		}
+		body{
+			background-color:#f4f4f4;
+		}
+	</style>
 	<script>
+		var h = $("#test").height();
+		$("#test").hide();
+		var th = $("#top").height();
+		$("#openOuter").height(h-th);
+		$("#opOuter").height((h-th)/2);
+		$("#ofOuter").height((h-th)/2);
+		var oph = $("#opOuter").height();
+		var ofh = $("#ofOuter").height();
+		$("#op , #of").height(oph/3)
+		
 		$('#op').fileTree({ root: '/glite/', script: 'filetree/' }, function(file) { 
+						openpath=file+"/";
+		});
+		$('#of').fileTree({ root: '/glite/', script: 'filetree/' }, function(file) { 
 						openpath=file+"/";
 		});
 	</script>

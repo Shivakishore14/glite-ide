@@ -45,7 +45,7 @@ if(jQuery) (function($){
 			if( o.collapseEasing == undefined ) o.collapseEasing = null;
 			if( o.multiFolder == undefined ) o.multiFolder = true;
 			if( o.loadMessage == undefined ) o.loadMessage = 'Loading...';
-			
+			b4 = null;
 			$(this).each( function() {
 				
 				function showTree(c, t) {
@@ -77,6 +77,9 @@ if(jQuery) (function($){
 								$(this).parent().removeClass('expanded').addClass('collapsed');
 							}
 						} else {
+							$(b4).css('background-color', '#FFFFFF');
+							$(this).css('background-color', '#ACE');
+							b4 = this;
 							h($(this).attr('rel'));
 						}
 						return false;
