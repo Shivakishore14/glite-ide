@@ -17,6 +17,14 @@ type Glite struct{
 	Js []byte
 	Path []byte
 }
+type newProject struct{
+	Name string
+	Html bool
+	Css bool
+	Js bool
+	Jquery bool
+	Bs bool
+}
 type CError struct {
 	Message string
 }
@@ -142,6 +150,25 @@ func ftHandler(w http.ResponseWriter, r *http.Request){
 	head = head + "</ul>"
 	fmt.Fprintf(w, head)
 }
+func createHandler(w http.ResponseWriter, r *http.Request){
+	s := r.FormValue("project")
+	var newProj newProject
+	json.Unmarshal([]byte(s), &newProj)
+	path := home + "/" + newProj.Name
+	e := os.Mkdir(string(filepath.Separator) + path, 0777)
+	if e != nil {
+		fmt.Println("error")			
+	}
+	path = path + "/"
+	_ , e1 := os.Create(path+"index.html")
+	os.Create(path+"style.css")
+	os.Create(path+"script.js")
+	if e1 != nil && e != nil {
+		fmt.Fprintf(w, "error")
+	}else{
+		fmt.Fprintf(w, "done")
+	}
+}
 func main(){
 	if runtime.GOOS == "windows" {
 		home = "C:\\glite"
@@ -164,6 +191,6 @@ func main(){
 	http.HandleFunc("/save/",saveHandler)
 	http.HandleFunc("/import/",importHandler)
 	http.HandleFunc("/filetree/",ftHandler)
+	http.HandleFunc("/create/",createHandler)
 	http.ListenAndServe(":80",nil)
-	
 }

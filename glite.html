@@ -40,7 +40,7 @@
 					<h1>Create project</h1><br><br>
 					<div id="projectdetails">					
 						<div class="row">
-							<span class="col-lg-1"></span><div class="col-lg-2">Name </div><input class="col-lg-7" type="text" id="path"></input>
+							<span class="col-lg-1"></span><div class="col-lg-2">Name </div><input class="col-lg-7" type="text" id="pName"></input>
 						</div><br>
 						<h3>Initialize with</h3>
 						<div class="row cpdiv">
@@ -67,7 +67,7 @@
 								<span>JavaScript</span>
 							</div>	
 							<div class="col-lg-7" align="center">
-								<input checked id="cbjs" data-toggle="toggle" type="checkbox">
+								<input checked id="cbJs" data-toggle="toggle" type="checkbox">
 							</div>
 						</div>
 						<h3>Initialze Frameworks</h3>
@@ -77,7 +77,7 @@
 								<span>Jquery</span>
 							</div>	
 							<div class="col-lg-7" align="center">
-								<input checked id="cbjquery" data-toggle="toggle" type="checkbox">
+								<input checked id="cbJquery" data-toggle="toggle" type="checkbox">
 							</div>
 						</div>
 						<div class="row cpdiv">
@@ -86,11 +86,11 @@
 								<span>Bootstrap</span>
 							</div>	
 							<div class="col-lg-7" align="center">
-								<input checked id="cbbootstrap" data-toggle="toggle" type="checkbox">
+								<input checked id="cbBs" data-toggle="toggle" type="checkbox">
 							</div>
 						</div><br>
 						<div class="row"><span class="col-lg-4"></span>
-							<button class="btn btn-warning col-lg-4">Create</button>
+							<button class="btn btn-warning col-lg-4" id = "btncreate">Create</button>
 						</div>				
 					</div>
 				</div>		
@@ -121,13 +121,29 @@
 		$("#ofOuter").height((h-th)/2);
 		var oph = $("#opOuter").height();
 		var ofh = $("#ofOuter").height();
-		$("#op , #of").height(oph/3)
+		$("#op ,#of").height(oph/3)
 		
 		$('#op').fileTree({ root: '/glite/', script: 'filetree/' }, function(file) { 
 						openpath=file+"/";
 		});
 		$('#of').fileTree({ root: '/glite/', script: 'filetree/' }, function(file) { 
 						openpath=file+"/";
+		});
+		$("#btncreate").on("click",function(){
+			var nProj = new Object();
+			nProj.Name = $("#pName").val();
+			nProj.Html = $("#cbHtml").is(":checked");
+			nProj.Css = $("#cbCss").is(":checked");
+			nProj.Js = $("#cbJs").is(":checked");
+			nProj.Jquery = $("#cbJquery").is(":checked");
+			nProj.Bs = $("#cbBs").is(":checked");
+			var proj = JSON.stringify(nProj);
+			$.post("/create/",{project:proj}, function(result){
+				if ( result === "done" ){
+					alert("created")			
+				}
+			});
+			alert(proj);
 		});
 	</script>
 </html>
