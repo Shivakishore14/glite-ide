@@ -10,7 +10,7 @@ import (
 	"runtime"
 	"strings"
 )
-var home string
+var home, lastPath string
 type Glite struct{
 	Html []byte
 	Css []byte
@@ -105,6 +105,9 @@ func saveHandler(w http.ResponseWriter, r *http.Request){
 }
 func importHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("path")
+	if len(path) < 0{
+		path = lastPath	
+	}
 	//fmt.Fprintf(w, path)
 	s,err := importProject(path)
 	if err != nil {
@@ -157,17 +160,36 @@ func createHandler(w http.ResponseWriter, r *http.Request){
 	path := home + "/" + newProj.Name
 	e := os.Mkdir(string(filepath.Separator) + path, 0777)
 	if e != nil {
-		fmt.Println("error")			
+		fmt.Fprintf(w, "duplicate")	
+		return		
 	}
-	path = path + "/"
+	l := len(path)
+	if path[l-1] != '/' {  //linux
+		path = path + "/"
+		fmt.Println("added /")
+	}
+	
+	lastPath = path		
+	
 	_ , e1 := os.Create(path+"index.html")
-	os.Create(path+"style.css")
-	os.Create(path+"script.js")
-	if e1 != nil && e != nil {
+	if newProj.Css {
+		os.Create(path+"style.css")
+	}
+	if newProj.Js {	
+		os.Create(path+"script.js")
+	}
+	ep := ioutil.WriteFile(path + "proj.cnf",[]byte(s), 0777)
+	
+	if e1 != nil || e != nil || ep != nil {
 		fmt.Fprintf(w, "error")
 	}else{
-		fmt.Fprintf(w, "done")
+		fmt.Fprintf(w, path)
 	}
+}
+func openProjectHandler(w http.ResponseWriter, r *http.Request){
+	path := r.FormValue("path")
+	lastPath = path
+	http.Redirect(w, r, "/index.html", http.StatusFound)
 }
 func main(){
 	if runtime.GOOS == "windows" {
@@ -192,5 +214,6 @@ func main(){
 	http.HandleFunc("/import/",importHandler)
 	http.HandleFunc("/filetree/",ftHandler)
 	http.HandleFunc("/create/",createHandler)
+	http.HandleFunc("/openProject/",openProjectHandler)
 	http.ListenAndServe(":80",nil)
 }
