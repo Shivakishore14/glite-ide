@@ -12,6 +12,15 @@ window.onload = function(){
 		jseditor.setSize("100%",h1);
 		$("#result1").height(h1);
 		$("#result2").height(th);
+		$.post("/import/",{}, function(result){
+			if ( result === "nop" ){
+				return;			
+			} 
+			var obj = jQuery.parseJSON( result );
+			htmleditor.setValue(Base64.decode(obj.Html));
+			csseditor.setValue(Base64.decode(obj.Css));
+			jseditor.setValue(Base64.decode(obj.Js));
+		});
 	}
 	var withbox = false;
 	var arr = [true,true,true,true];
@@ -279,5 +288,6 @@ function completeAfter(cm, pred) {
 	});
 	setTheme(str);
 	init();	
+	
 	
 }

@@ -43,7 +43,6 @@ func pathExists(path string) (bool, error) {
 }
 func isDir(path string) (bool, error) {
 	fileInfo, err := os.Stat(path)
-	fmt.Println(path)
 	if err != nil{
 		return false,err	
 	}
@@ -105,10 +104,16 @@ func saveHandler(w http.ResponseWriter, r *http.Request){
 }
 func importHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("path")
-	if len(path) < 0{
-		path = lastPath	
+	if len(path) < 1{
+		if len(lastPath) > 1 {
+			path = lastPath	
+			fmt.Println("last path imported + lp = "+lastPath)
+		}else {
+			fmt.Fprintf(w, "nop")
+			return		
+		}
 	}
-	//fmt.Fprintf(w, path)
+	fmt.Println(path)
 	s,err := importProject(path)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())	
@@ -118,7 +123,6 @@ func importHandler(w http.ResponseWriter, r *http.Request){
 }
 func ftHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("dir")
-	fmt.Println("path = 	"+path)
 	head := "<ul class=\"jqueryFileTree\" style=\"display: none;\"> \n"
 	files, _ := ioutil.ReadDir(path)
 	for _, f := range files {
@@ -190,6 +194,24 @@ func openProjectHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("path")
 	lastPath = path
 	http.Redirect(w, r, "/index.html", http.StatusFound)
+	fmt.Println("last path" + lastPath )
+}
+func openHandler(w http.ResponseWriter, r *http.Request){
+	path := r.FormValue("filePath")
+	fmt.Println(path)
+	pe, _ := pathExists(path)
+	if pe != true {	
+		fmt.Println("[path error] file not found")
+		fmt.Fprintf(w, "nop")
+		return
+	}
+	file, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println("[file error] file read error")
+		fmt.Fprintf(w, "nop")
+		return 
+	}
+	fmt.Fprintf(w, string(file))
 }
 func main(){
 	if runtime.GOOS == "windows" {
@@ -211,6 +233,7 @@ func main(){
 	fs := http.FileServer(http.Dir("."))
 	http.Handle("/",fs)
 	http.HandleFunc("/save/",saveHandler)
+	http.HandleFunc("/open/",openHandler)
 	http.HandleFunc("/import/",importHandler)
 	http.HandleFunc("/filetree/",ftHandler)
 	http.HandleFunc("/create/",createHandler)

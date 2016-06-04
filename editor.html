@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Glite</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="css/bootstrap-theme.css"/>
+		<link rel="stylesheet" href="css/style.css"/>
+		<link rel="stylesheet" href="codemirror/lib/codemirror.css">
+		<link rel="stylesheet" href="css/jqueryFileTree.css" type="text/css" media="screen"/>
+		<script src="js/jquery.js"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="js/bootstraptoggle.js" type="text/javascript"></script>
+		<script src="codemirror/lib/codemirror.js" type="text/javascript"></script>
+		<script src="js/jquery.easing.js" type="text/javascript"></script>
+		<script src="js/jqueryFileTree.js" type="text/javascript"></script>
+		<script src="js/attrchange.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="test"></div>
+		<div id="top">
+			<span id="logo"><span class="b">{</span> G.lite <span class="b">}</span></span>
+			<span id="icongrp">
+			<span id="settingsicon" class="glyphicon glyphicon-wrench icons" animation="true" data-toggle="tooltip" data-placement="bottom" title="settings"></span></span>
+		</div>
+		<div class="container-fluid">
+			<div class="col-lg-2" id="eftree"></div>
+			<div class="col-lg-10" id="editor">
+				<div id="title">title</div>				
+				<textarea class="txt" id="code" placeholder="HTML here"></textarea>			
+			</div>
+		</div>
+	</body>
+	<style>
+		#eftree{
+			background-color:#f4f4f4;
+			overflow-x: hidden;
+    			overflow-y: scroll;
+			
+		}
+		#sk{
+			background-color:blue;		
+		}
+		.container-fluid{
+			padding: 0px;		
+		}
+		#editor{
+			padding:0px;
+		}
+		#title{
+			border-radius: 7px 20px 0px 0px;
+			background-color:cadetblue;
+			width:150px;
+			text-align: center;
+			color: #FFFFFF;
+			height:100%;
+		}
+	</style>
+	<script>
+		var h = $("#test").height();
+		$("#test").hide();
+		var th = $("#top").height();
+		var th1 = $("#title").height();
+		$("#eftree").height(h-th);
+		var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+			lineNumbers: true,
+			extraKeys: {"F11": function(cm) {
+				cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+			},"Esc": function(cm) {
+				if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+			}},
+			matchBrackets: true,
+			mode: "htmlmixed"
+	  	});
+		editor.setSize("100%",h-th-th1);
+		$('#eftree').fileTree({ root: '/', script: 'filetree/' }, function(file) { 
+					open(file);
+		});
+		function open(file){
+			$.post('/open/', { filePath:file }, function(result) {
+    				if (result == "nop"){
+					alert("cannot open");				
+				} else {
+					editor.setValue(result);				
+				}
+			});
+		}
+	</script>
+</html>
