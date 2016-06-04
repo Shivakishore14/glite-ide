@@ -1,7 +1,7 @@
 package main
-
+import b64 "encoding/base64"
 import (
-	"fmt"  
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
@@ -24,6 +24,13 @@ type newProject struct{
 	Js bool
 	Jquery bool
 	Bs bool
+}
+type file struct{
+	Name string
+	Data string
+	Type string
+	Path string
+	Dir string
 }
 type CError struct {
 	Message string
@@ -83,7 +90,7 @@ func importProject(path string) (string, error){
 	}
 	return string(gjson), nil	
 }
-func saveHandler(w http.ResponseWriter, r *http.Request){
+func saveProjectHandler(w http.ResponseWriter, r *http.Request){
 	html := r.FormValue("html")
 	css := r.FormValue("css")
 	js := r.FormValue("js")
@@ -205,13 +212,38 @@ func openHandler(w http.ResponseWriter, r *http.Request){
 		fmt.Fprintf(w, "nop")
 		return
 	}
-	file, err := ioutil.ReadFile(path)
+	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Println("[file error] file read error")
 		fmt.Fprintf(w, "nop")
 		return 
 	}
-	fmt.Fprintf(w, string(file))
+	//fmt.Fprintf(w,  b64.StdEncoding.EncodeToString(file))
+	dir, name := filepath.Split(path)
+	fileType := filepath.Ext(path)
+	f := &file{ Name: name, Data:b64.StdEncoding.EncodeToString(data) , Dir:dir, Type:fileType,Path:path}
+	fjson, err := json.Marshal(f)
+	if err != nil {
+		fmt.Println("[json error] json creation error")
+		fmt.Fprintf(w, "nop")
+		return 
+	}
+	fmt.Fprintf(w, string(fjson))
+}
+func saveHandler(w http.ResponseWriter, r *http.Request){
+	path := r.FormValue("filePath")
+	recvdData := r.FormValue("data")
+	data, errb64 := b64.StdEncoding.DecodeString(recvdData)
+	if errb64 != nil{
+		fmt.Fprintf(w, "error")
+		return	
+	}
+	err := ioutil.WriteFile(path, []byte(data), 0777);
+	if err != nil{
+		fmt.Fprintf(w, "error")
+		return	
+	}
+	fmt.Fprintf(w,"done")
 }
 func main(){
 	if runtime.GOOS == "windows" {
@@ -232,6 +264,7 @@ func main(){
 	}
 	fs := http.FileServer(http.Dir("."))
 	http.Handle("/",fs)
+	http.HandleFunc("/saveProject/",saveProjectHandler)
 	http.HandleFunc("/save/",saveHandler)
 	http.HandleFunc("/open/",openHandler)
 	http.HandleFunc("/import/",importHandler)

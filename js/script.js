@@ -274,7 +274,7 @@ function completeAfter(cm, pred) {
 		});	
 	}
 	function send(a,b,c,d){
-			$.post('/save/', { html:a, css:b, js:c, path:d }, function(result) {
+			$.post('/saveProject/', { html:a, css:b, js:c, path:d }, function(result) {
     				if (result == "saved"){
 					alert("saved");				
 				} else {
