@@ -16,6 +16,7 @@ type Glite struct{
 	Css []byte
 	Js []byte
 	Path []byte
+	Name []byte
 }
 type newProject struct{
 	Name string
@@ -94,14 +95,15 @@ func saveProjectHandler(w http.ResponseWriter, r *http.Request){
 	html := r.FormValue("html")
 	css := r.FormValue("css")
 	js := r.FormValue("js")
-	path := r.FormValue("path")
+	name := r.FormValue("name")
+	path := home + "/" + name ; // linux
 	fmt.Println(html)
 	l := len(path)
 	if path[l-1] != '/' {  //linux
 		path = path + "/"
 		fmt.Println("added /")
 	}
-	g := &Glite{Html: []byte(html) , Css: []byte(css), Js: []byte(js), Path:[]byte(path)}
+	g := &Glite{Html: []byte(html) , Css: []byte(css), Js: []byte(js), Path:[]byte(path), Name:[]byte(name)}
 	err := g.saveProject()
 	if err != nil {
 		fmt.Fprintf(w, err.Error())

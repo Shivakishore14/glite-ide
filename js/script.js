@@ -3,6 +3,7 @@ window.onload = function(){
 	$('[data-toggle="tooltip"]').tooltip(); 
 	var th = $("#test").height();
 	var tw = $("#test").width();
+	var obj = new Object();
 	$("#test").hide();
 	function init(){
 		var h = $("#htmltitle").offset().top;
@@ -16,7 +17,7 @@ window.onload = function(){
 			if ( result === "nop" ){
 				return;			
 			} 
-			var obj = jQuery.parseJSON( result );
+			obj = jQuery.parseJSON( result );
 			htmleditor.setValue(Base64.decode(obj.Html));
 			csseditor.setValue(Base64.decode(obj.Css));
 			jseditor.setValue(Base64.decode(obj.Js));
@@ -236,10 +237,16 @@ function completeAfter(cm, pred) {
 	}	
 	setTheme("default");
 	$("#saveicon").on("click", function(){
-		$("#savepopup").show();
-		$("#popupbg").show();	
-		savepopelt();
-		
+		/*
+		*/
+		if (obj.Path == undefined){
+			notify("create a new project");
+			$("#savepopup").show();
+			$("#popupbg").show();	
+		savepopelt();	
+		} else {
+			send(htmleditor.getValue("\n"), csseditor.getValue("\n"), jseditor.getValue("\n"),Base64.decode(obj.Name));
+		}
 	});
 	openpath=""
 	$("#importicon").on("click", function(){
@@ -257,8 +264,9 @@ function completeAfter(cm, pred) {
 		$("#popupbg").hide();
 	});
 	$("#btnsave").on("click",function(){
-		var path= $("#path").val();		
-		send(htmleditor.getValue("\n"), csseditor.getValue("\n"), jseditor.getValue("\n"),path);
+		var name= $("#name").val();		
+		send(htmleditor.getValue("\n"), csseditor.getValue("\n"), jseditor.getValue("\n"),name);
+		//notify(Base64.decode(obj.Name))
 		$("#savepopup").hide();
 		$("#popupbg").hide();
 	});
@@ -267,20 +275,27 @@ function completeAfter(cm, pred) {
 			if ( result === "not project" ){
 				alert("not imported")			
 			} 
-			var obj = jQuery.parseJSON( result );
+			obj = jQuery.parseJSON( result );
 			htmleditor.setValue(Base64.decode(obj.Html));
 			csseditor.setValue(Base64.decode(obj.Css));
 			jseditor.setValue(Base64.decode(obj.Js));
 		});	
 	}
+	//save start
 	function send(a,b,c,d){
-			$.post('/saveProject/', { html:a, css:b, js:c, path:d }, function(result) {
+			//check if path is undefined
+			$.post('/saveProject/', { html:a, css:b, js:c, name:d }, function(result) {
     				if (result == "saved"){
-					alert("saved");				
+					notify("saved");			
 				} else {
-					alert(result);				
+					notify("not saved");				
 				}
 			});
+	}
+	//save end
+	function notify(s){
+		$("#notificationArea").html(s);
+		$('#notification').slideDown(300).delay(3000).slideUp(300);
 	}
 	var str = "";
 	$( "select option:selected" ).each(function() {
