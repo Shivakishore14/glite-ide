@@ -266,8 +266,13 @@ function completeAfter(cm, pred) {
 	$("#btnsave").on("click",function(){
 		var name= $("#name").val();		
 		send(htmleditor.getValue("\n"), csseditor.getValue("\n"), jseditor.getValue("\n"),name);
-		//notify(Base64.decode(obj.Name))
 		$("#savepopup").hide();
+		$("#popupbg").hide();
+	});
+	$(".close").on("click",function(){
+		$("#savepopup").hide();
+		$("#ftdiv").hide();
+		$("#popup").hide();
 		$("#popupbg").hide();
 	});
 	function open(pathval) {
@@ -297,12 +302,16 @@ function completeAfter(cm, pred) {
 		$("#notificationArea").html(s);
 		$('#notification').slideDown(300).delay(3000).slideUp(300);
 	}
+	shortcut.add("Ctrl+S", function() {
+		$("#saveicon").trigger("click");
+	});
+	shortcut.add("Ctrl+C", function() {
+		$("#result").trigger("click");
+	});
 	var str = "";
 	$( "select option:selected" ).each(function() {
 		str += $( this ).text() + " ";
 	});
 	setTheme(str);
 	init();	
-	
-	
 }

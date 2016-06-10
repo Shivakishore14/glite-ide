@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"runtime"
 	"strings"
+	"unicode/utf8"
 )
 var home, lastPath string
 type Glite struct{
@@ -32,6 +33,7 @@ type file struct{
 	Type string
 	Path string
 	Dir string
+	Binary bool
 }
 type CError struct {
 	Message string
@@ -56,7 +58,9 @@ func isDir(path string) (bool, error) {
 	}
 	return fileInfo.IsDir(), err
 }
-
+func isBinary(path string) bool	{
+	return !utf8.ValidString(path)
+}
 func (g *Glite)saveProject() error{
 	path := string(g.Path)
 	pe, _ := pathExists(path)
@@ -223,7 +227,8 @@ func openHandler(w http.ResponseWriter, r *http.Request){
 	//fmt.Fprintf(w,  b64.StdEncoding.EncodeToString(file))
 	dir, name := filepath.Split(path)
 	fileType := filepath.Ext(path)
-	f := &file{ Name: name, Data:b64.StdEncoding.EncodeToString(data) , Dir:dir, Type:fileType,Path:path}
+	binary := isBinary(string(data))
+	f := &file{ Name: name, Data:b64.StdEncoding.EncodeToString(data) , Dir:dir, Type:fileType,Path:path, Binary:binary}
 	fjson, err := json.Marshal(f)
 	if err != nil {
 		fmt.Println("[json error] json creation error")

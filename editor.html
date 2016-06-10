@@ -22,7 +22,7 @@
 			<span id="logo"><span class="b">{</span> G.lite <span class="b">}</span></span>
 			<span id="icongrp">
 			<span id="saveicon" class="glyphicon glyphicon-floppy-disk icons" data-toggle="tooltip" data-placement="bottom" title="save project"></span>
-			<span id="settingsicon" class="glyphicon glyphicon-wrench icons" animation="true" data-toggle="tooltip" data-placement="bottom" title="settings"></span></span>
+			<span id="settingsicon" class="glyphicon glyphicon-cog icons" animation="true" data-toggle="tooltip" data-placement="bottom" title="settings"></span></span>
 		</div>
 		<div class="container-fluid">
 			<div class="col-lg-2" id="eftree"></div>
@@ -42,7 +42,7 @@
 			<div class="row" id="settings">
 				<div class="col-lg-3"></div>
 				<div id="popup" class="col-lg-6">
-					<div>	
+					<div>	<span class="glyphicon glyphicon-remove-sign close"></span>
 						<h1 align="center">Settings</h1><br><br>
 						<div class="container-fluid settings-elt">
 							<div class="row">
@@ -147,8 +147,13 @@
 				} else {
 					fileObj = jQuery.parseJSON( result );
 					editor.setValue(Base64.decode(fileObj.Data));
+					if( fileObj.Name.length > 13)
+						fileObj.Name = fileObj.Name.slice(0,9)+"...";
 					$("#title").html(fileObj.Name);
-					//alert(result);
+					if(fileObj.Binary == true){
+						notify("opening a binary file");
+					}
+					
 				}
 			});
 		}
@@ -187,6 +192,10 @@
 			setpopelt();
 		});
 		$("#setbtndone").on("click",function(){
+			$("#popup").hide();
+			$("#popupbg").hide();
+		});
+		$(".close").on("click",function(){
 			$("#popup").hide();
 			$("#popupbg").hide();
 		});
