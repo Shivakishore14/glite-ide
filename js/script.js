@@ -7,13 +7,13 @@ window.onload = function(){
 	$("#test").hide();
 	function init(){
 		var h = $("#htmltitle").offset().top;
-		var h1 = th-h-h/2;
+		var h1 = th-h;
 		htmleditor.setSize("100%",h1);
 		csseditor.setSize("100%",h1);
 		jseditor.setSize("100%",h1);
 		$("#result1").height(h1);
 		$("#result2").height(th);
-		$.post("/import/",{}, function(result){
+		$.post("/import/",{mode:"project"}, function(result){
 			if ( result === "nop" ){
 				return;			
 			} 
@@ -233,12 +233,10 @@ function completeAfter(cm, pred) {
 		var h = $("#ftdiv").height();
 		var w = $("#ftdiv").width();
 		$("#ftdiv").css('top',th/2-h/2-20);
-		$("#ftdiv").css('left',tw/2);	
+		$("#ftdiv").css('left',tw/2-w/2-20);	
 	}	
 	setTheme("default");
 	$("#saveicon").on("click", function(){
-		/*
-		*/
 		if (obj.Path == undefined){
 			notify("create a new project");
 			$("#savepopup").show();

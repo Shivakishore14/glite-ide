@@ -18,6 +18,13 @@
 		<div id="top">
 			<span id="logo"><span class="b">{</span> G.lite <span class="b">}</span></span>
 		</div>
+		<div id="notification" class="container-fluid">
+			<div class="row">
+				<div class="col-lg-4"></div>
+				<div class="col-lg-4" id="notificationArea"></div>
+				<div class="col-lg-4"></div>			
+			</div>		
+		</div>
 		<div class = "container-fluid">
 			<div class = "row">
 				<div class="col-lg-6" id="openOuter">
@@ -32,7 +39,7 @@
 						<h1>Open Files</h1>
 						<div id="of"></div><br>
 						<div class="row"><span class="col-lg-4"></span>
-								<button class="btn btn-warning col-lg-4">Open</button>
+								<button class="btn btn-warning col-lg-4" id="btnOpenFile">Open</button>
 						</div>
 					</div>					
 				</div>	
@@ -130,16 +137,17 @@
 		var oph = $("#opOuter").height();
 		var ofh = $("#ofOuter").height();
 		$("#op ,#of").height(oph/3)
-		var openpath = "", createdpath = "";
+		var openpath = "", openpath1="", createdpath = "";
 		$('#op').fileTree({ root: '/glite/', script: 'filetree/' }, function(file) { 
 						openpath=file+"/";
 		});
 		$('#of').fileTree({ root: '/', script: 'filetree/' }, function(file) { 
-						openpath=file+"/";
+						openpath1=file;
 		});
 		$("#btncreate").on("click",function(){
 			if ($("#pName").val().length < 1) {
 				$("#pName").addClass("inputInvalid");
+				notify("Invalid Project name");
 				return
 			}
 			var nProj = new Object();
@@ -152,11 +160,14 @@
 			var proj = JSON.stringify(nProj);
 			$.post("/create/",{project:proj}, function(result){
 				if(result === "duplicate"){
-					alert("project with same name already present");				
+					notify("project with same name already present");				
 				}else{
 					post("/openProject/", {path: result});	
 				}
 			});	
+		});
+		$("#btnOpenFile").on("click", function() {
+			post("/openProject/",openpath1);
 		});
 		$("#btnOpenProject").on("click",function(){
 			openProject(openpath);
@@ -174,10 +185,14 @@
 			hiddenField.setAttribute("type", "hidden");
 			hiddenField.setAttribute("name", "path");
 			hiddenField.setAttribute("value", params);
-
+			
 			form.appendChild(hiddenField);
 			document.body.appendChild(form);
 			form.submit();
+		}
+		function notify(s){
+			$("#notificationArea").html(s);
+			$('#notification').slideDown(300).delay(3000).slideUp(300);
 		}
 	</script>
 </html>

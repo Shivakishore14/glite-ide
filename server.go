@@ -11,7 +11,7 @@ import (
 	"strings"
 	"unicode/utf8"
 )
-var home, lastPath string
+var home, lastProjectPath, lastPath string
 type Glite struct{
 	Html []byte
 	Css []byte
@@ -95,6 +95,23 @@ func importProject(path string) (string, error){
 	}
 	return string(gjson), nil	
 }
+func openFile(path string) (string, error){
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println("[file error] file read error")
+		return "",err
+	}
+	dir, name := filepath.Split(path)
+	fileType := filepath.Ext(path)
+	binary := isBinary(string(data))
+	f := &file{ Name: name, Data:b64.StdEncoding.EncodeToString(data) , Dir:dir, Type:fileType,Path:path, Binary:binary}
+	fjson, err1 := json.Marshal(f)
+	if err1 != nil {
+		fmt.Println("[json error] json creation error")
+		return "",err1
+	}
+	return string(fjson),err
+}
 func saveProjectHandler(w http.ResponseWriter, r *http.Request){
 	html := r.FormValue("html")
 	css := r.FormValue("css")
@@ -118,12 +135,29 @@ func saveProjectHandler(w http.ResponseWriter, r *http.Request){
 func importHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("path")
 	if len(path) < 1{
-		if len(lastPath) > 1 {
-			path = lastPath	
-			fmt.Println("last path imported + lp = "+lastPath)
-		}else {
-			fmt.Fprintf(w, "nop")
-			return		
+		mode := r.FormValue("mode")
+		if mode == "project"{
+			if len(lastProjectPath) > 1 {
+				path = lastProjectPath	
+				//fmt.Println("last project path imported + lp = "+lastProjectPath)
+			}else {
+				fmt.Fprintf(w, "nop")
+				return		
+			}
+		}else{
+			if len(lastPath) > 1 {
+				path = lastPath	
+				fjson, err1 := openFile(path)
+				if err1 != nil {
+					fmt.Fprintf(w, "nop")
+					return 
+				}
+				fmt.Fprintf(w, fjson)
+				return
+			}else {
+				fmt.Fprintf(w, "nop")
+				return		
+			}		
 		}
 	}
 	fmt.Println(path)
@@ -186,7 +220,7 @@ func createHandler(w http.ResponseWriter, r *http.Request){
 		fmt.Println("added /")
 	}
 	
-	lastPath = path		
+	lastProjectPath = path		
 	
 	_ , e1 := os.Create(path+"index.html")
 	if newProj.Css {
@@ -205,9 +239,14 @@ func createHandler(w http.ResponseWriter, r *http.Request){
 }
 func openProjectHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("path")
-	lastPath = path
-	http.Redirect(w, r, "/index.html", http.StatusFound)
-	fmt.Println("last path" + lastPath )
+	if pe, _ := pathExists(path + "proj.cnf");pe{
+		lastProjectPath = path
+		http.Redirect(w, r, "/index.html", http.StatusFound)
+	} else {
+		lastPath = path	
+		fmt.Println("recv " , path)
+		http.Redirect(w, r, "/editor.html", http.StatusFound)	
+	}
 }
 func openHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("filePath")
@@ -218,24 +257,14 @@ func openHandler(w http.ResponseWriter, r *http.Request){
 		fmt.Fprintf(w, "nop")
 		return
 	}
-	data, err := ioutil.ReadFile(path)
-	if err != nil {
-		fmt.Println("[file error] file read error")
-		fmt.Fprintf(w, "nop")
-		return 
-	}
+	
 	//fmt.Fprintf(w,  b64.StdEncoding.EncodeToString(file))
-	dir, name := filepath.Split(path)
-	fileType := filepath.Ext(path)
-	binary := isBinary(string(data))
-	f := &file{ Name: name, Data:b64.StdEncoding.EncodeToString(data) , Dir:dir, Type:fileType,Path:path, Binary:binary}
-	fjson, err := json.Marshal(f)
-	if err != nil {
-		fmt.Println("[json error] json creation error")
+	fjson,err1 := openFile(path)
+	if err1 != nil {
 		fmt.Fprintf(w, "nop")
 		return 
 	}
-	fmt.Fprintf(w, string(fjson))
+	fmt.Fprintf(w, fjson)
 }
 func saveHandler(w http.ResponseWriter, r *http.Request){
 	path := r.FormValue("filePath")

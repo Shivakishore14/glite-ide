@@ -146,18 +146,19 @@
 					alert("cannot open");				
 				} else {
 					fileObj = jQuery.parseJSON( result );
-					editor.setValue(Base64.decode(fileObj.Data));
-					if( fileObj.Name.length > 13)
-						fileObj.Name = fileObj.Name.slice(0,9)+"...";
-					$("#title").html(fileObj.Name);
-					if(fileObj.Binary == true){
-						notify("opening a binary file");
-					}
-					
+					setFile2Editor(fileObj);
 				}
 			});
 		}
-
+		function setFile2Editor(fileObj){
+			editor.setValue(Base64.decode(fileObj.Data));
+			if( fileObj.Name.length > 13)
+				fileObj.Name = fileObj.Name.slice(0,9)+"...";
+			$("#title").html(fileObj.Name);
+			if(fileObj.Binary == true){
+				notify("opening a binary file");
+			}
+		}
 		// save start
 		function save(fileData){
 			fileData = Base64.encode(fileData);
@@ -229,5 +230,13 @@
 			console.log( jqxhr.status ); // 200
 			console.log( "Load was performed." );
 		}); */
+		$.post("/import/",{mode:"file"}, function(result){
+			if ( result === "nop" ){
+				return;			
+			} 
+			fileObj = jQuery.parseJSON( result );
+			//alert(result);
+			setFile2Editor(fileObj);
+		});
 	</script>
 </html>
