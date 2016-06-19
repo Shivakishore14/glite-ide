@@ -162,7 +162,7 @@
 				if(result === "duplicate"){
 					notify("project with same name already present");				
 				}else{
-					post("/openProject/", {path: result});	
+					post("/openProject/", result);	
 				}
 			});	
 		});

@@ -72,7 +72,6 @@ window.onload = function(){
 	$("#outputbtn").on('click', function() {
                 handle(3);
         });
-	//alert("hi");
 	$("#changeres2").on('click', function() {
 		withbox = true;
 		currentold[1] = currentold[0];
@@ -89,21 +88,20 @@ window.onload = function(){
 		$("#res2outer").show()
 		resize();
 	});
-function completeAfter(cm, pred) {
-        var cur = cm.getCursor();
-        if (!pred || pred()) setTimeout(function() {
-          if (!cm.state.completionActive)
-            cm.showHint({completeSingle: false});
-        }, 100);
-        return CodeMirror.Pass;
-      }
-
-      function completeIfAfterLt(cm) {
-        return completeAfter(cm, function() {
-          var cur = cm.getCursor();
-          return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
-        });
-      }
+	function completeAfter(cm, pred) {
+        	var cur = cm.getCursor();
+        	if (!pred || pred()) setTimeout(function() {
+          		if (!cm.state.completionActive)
+            			cm.showHint({completeSingle: false});
+        		}, 100);
+        	return CodeMirror.Pass;
+      	}
+	function completeIfAfterLt(cm) {
+	        return completeAfter(cm, function() {
+	        	var cur = cm.getCursor();
+          		return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+        	});
+      	}
 	var htmleditor = CodeMirror.fromTextArea(document.getElementById("htmlcode"), {
 		lineNumbers: true,
 		extraKeys: {"'<'": completeAfter,
